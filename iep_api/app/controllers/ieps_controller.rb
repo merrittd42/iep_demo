@@ -56,22 +56,29 @@ class IepsController < ApplicationController
         pdf.set_field("goal_3", params[:goal3])
         pdf.set_field("goal_4", params[:goal4])
         pdf.set_field("goal_5", params[:goal5])
-        pdf.set_field("goal_statement_1", params[:goalStatement1])
-        pdf.set_field("goal_statement_2", params[:goalStatement2])
-        pdf.set_field("goal_statement_3", params[:goalStatement3])
-        pdf.set_field("goal_statement_4", params[:goalStatement4])
-        pdf.set_field("goal_statement_5", params[:goalStatement5])
+        pdf.set_field("goal_statement_1", params[:statement1])
+        pdf.set_field("goal_statement_2", params[:statement2])
+        pdf.set_field("goal_statement_3", params[:statement3])
+        pdf.set_field("goal_statement_4", params[:statement4])
+        pdf.set_field("goal_statement_5", params[:statement5])
         pdf.set_field("current_1", "Average GPA of 2.5")
         pdf.set_field("current_2", "Has trouble interacting with peers")
         pdf.set_field("current_3", "Distracted occasionally")
         pdf.set_field("current_4", "Disrupts class occasionally")
         pdf.set_field("current_5", "Needs help with math consistently ")
 
-        pdf.save_as('filled.pdf')
+        pdf.save_as('neat.pdf')
 
         pdf.close
 
-        send_file('filled.pdf', filename: 'filled.pdf', type: 'application/pdf')
+        content = File.binread('neat.pdf')
+
+
+        puts params
+        puts content
+
+        send_data Base64.encode64(content), type: 'application/pdf', disposition: 'inline' 
+        
     end
 
 end
